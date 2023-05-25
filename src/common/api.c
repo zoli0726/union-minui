@@ -1403,9 +1403,7 @@ static void POW_quitOverlay(void) {
 static void POW_updateBatteryStatus(void) {
 	pow.is_charging = getInt("/sys/class/power_supply/battery/charger_online");
 	
-	// TODO: newer batteries have a different range, ???-???
-	int i = getInt("/sys/class/power_supply/battery/voltage_now") / 10000; // 310-410
-	i -= 310; 	// ~0-100
+	int i = getInt("/sys/class/power_supply/battery/capacity");
 
 	// worry less about battery and more about the game you're playing
 	     if (i>80) pow.charge = 100;
@@ -1422,11 +1420,12 @@ static void POW_updateBatteryStatus(void) {
 }
 
 static void* POW_monitorBattery(void *arg) {
+	sleep(5);
 	while(1) {
 		// TODO: the frequency of checking should depend on whether 
 		// we're in game (less frequent) or menu (more frequent)
-		sleep(1);
 		POW_updateBatteryStatus();
+		sleep(30);
 	}
 	return NULL;
 }
@@ -1435,11 +1434,10 @@ void POW_init(void) {
 	pow.can_poweroff = 1;
 	pow.can_autosleep = 1;
 	pow.should_warn = 0;
-	pow.charge = POW_LOW_CHARGE;
+	pow.charge = 100;
 	
 	POW_initOverlay();
 
-	POW_updateBatteryStatus();
 	pthread_create(&pow.battery_pt, NULL, &POW_monitorBattery, NULL);
 }
 void POW_quit(void) {
