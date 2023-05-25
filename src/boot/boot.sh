@@ -1,7 +1,7 @@
 #!/system/bin/sh
 
 /usbdbg.sh device
-
+echo 0xF > /sys/devices/system/cpu/autoplug/plug_mask
 TF1_PATH=/mnt/mmc # ROMS partition
 TF2_PATH=/mnt/sdcard
 SDCARD_PATH=$TF1_PATH
