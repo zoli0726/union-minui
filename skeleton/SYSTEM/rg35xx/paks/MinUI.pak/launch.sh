@@ -39,6 +39,7 @@ cd $(dirname "$0")
 #######################################
 
 keymon.elf & # &> $LOGS_PATH/keymon.txt &
+#./battery.sh &
 # ./batmon.sh &> /mnt/sdcard/batmon.txt &
 
 #######################################
@@ -48,7 +49,7 @@ NEXT_PATH="/tmp/next"
 touch "$EXEC_PATH" && sync
 while [ -f "$EXEC_PATH" ]; do
 	overclock.elf $CPU_SPEED_PERF
-	./minui.elf &> $LOGS_PATH/minui.txt
+	./minui.elf
 	sync
 	
 	if [ -f $NEXT_PATH ]; then
