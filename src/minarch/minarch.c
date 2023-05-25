@@ -2776,6 +2776,9 @@ static void video_refresh_callback(const void *data, unsigned width, unsigned he
 			x = MSG_blitDouble(use_double, x,y);
 			x = MSG_blitChar(DIGIT_PERCENT,x,y);
 		}
+		x = MSG_blitChar(DIGIT_SPACE,x,y);
+		x = MSG_blitInt(getInt("/sys/class/power_supply/battery/capacity"), x,y);
+		x = MSG_blitChar(DIGIT_PERCENT,x,y);
 		
 		if (x>bottom_width) bottom_width = x; // keep the largest width because triple buffer
 		
@@ -4248,7 +4251,7 @@ static void trackFPS(void) {
 	if (now - sec_start>=1000) {
 		double last_time = (double)(now - sec_start) / 1000;
 		fps_double = fps_ticks / last_time;
-		cpu_double = cpu_ticks / last_time;
+		cpu_double = getInt("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq") / 1000;
 		use_ticks = getUsage();
 		if (use_ticks && last_use_ticks) {
 			use_double = (use_ticks - last_use_ticks) / last_time;
