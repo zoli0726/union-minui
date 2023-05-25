@@ -4353,7 +4353,7 @@ int main(int argc , char* argv[]) {
 		limitFF();
 		
 		if (show_menu) Menu_loop();
-		
+		if(show_debug) trackFPS();
 		trackFPS();
 	}
 	
